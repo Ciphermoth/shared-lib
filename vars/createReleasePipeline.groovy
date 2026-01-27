@@ -1,5 +1,7 @@
-
 def call(Map config = [:]) {
+
+    // Load helper class from src/release/ReleaseHelpers.groovy
+    def helpers = new release.ReleaseHelpers(this)
 
     pipeline {
         agent any
@@ -20,53 +22,41 @@ def call(Map config = [:]) {
 
         stages {
 
-            // ---------------------------------------------------------
-            // CHECKOUT STAGE
-            // ---------------------------------------------------------
             stage('Checkout All Repositories') {
                 steps {
                     script {
                         echo "=== CHECKOUT STAGE ==="
-                        checkoutAllComponents()
+                        helpers.checkoutAllComponents()
                     }
                 }
             }
 
-            // ---------------------------------------------------------
-            // RELEASE CREATION STAGE
-            // ---------------------------------------------------------
             stage('Load release-version.json') {
                 steps {
                     script {
                         echo "=== RELEASE CREATION STAGE ==="
-                        loadReleaseVersion()
-                        determineVersionChanges()
+                        helpers.loadReleaseVersion()
+                        helpers.determineVersionChanges()
                     }
                 }
             }
 
-            // ---------------------------------------------------------
-            // RELEASE CANDIDATE LOGIC
-            // ---------------------------------------------------------
             stage('Create Release Candidate Branch') {
                 when { expression { params.IS_CANDIDATE } }
                 steps {
                     script {
                         echo "=== CREATING RELEASE CANDIDATE ==="
-                        createReleaseCandidateBranch()
+                        helpers.createReleaseCandidateBranch()
                     }
                 }
             }
 
-            // ---------------------------------------------------------
-            // OFFICIAL RELEASE LOGIC
-            // ---------------------------------------------------------
             stage('Prepare Official Release Branch') {
                 when { expression { !params.IS_CANDIDATE } }
                 steps {
                     script {
                         echo "=== CREATING OFFICIAL RELEASE ==="
-                        createOfficialReleaseBranch()
+                        helpers.createOfficialReleaseBranch()
                     }
                 }
             }
@@ -76,69 +66,54 @@ def call(Map config = [:]) {
                 steps {
                     script {
                         echo "=== GENERATING METADATA FILES ==="
-                        generateMetadataFiles()
+                        helpers.generateMetadataFiles()
                     }
                 }
             }
 
-            // ---------------------------------------------------------
-            // NTSPDDEPLOY SUBMODULE PULL
-            // ---------------------------------------------------------
             stage('Pull #### Release Branch') {
                 steps {
                     script {
                         echo "=== PULLING #### SUBMODULES ==="
-                        pullDeploySubmodules(params.IS_CANDIDATE)
+                        helpers.pullDeploySubmodules(params.IS_CANDIDATE)
                     }
                 }
             }
 
-            // ---------------------------------------------------------
-            // RELEASE NOTES
-            // ---------------------------------------------------------
             stage('Generate Release Notes') {
                 steps {
                     script {
                         echo "=== GENERATING RELEASE NOTES ==="
-                        generateReleaseNotes()
+                        helpers.generateReleaseNotes()
                     }
                 }
             }
 
-            // ---------------------------------------------------------
-            // NEXUS STAGE
-            // ---------------------------------------------------------
             stage('Nexus Artifact Publishing') {
                 steps {
                     script {
                         echo "=== NEXUS STAGE ==="
-                        generateArtifacts()
-                        uploadArtifactsToNexus()
+                        helpers.generateArtifacts()
+                        helpers.uploadArtifactsToNexus()
                     }
                 }
             }
 
-            // ---------------------------------------------------------
-            // DEPLOY STAGE
-            // ---------------------------------------------------------
             stage('Deploy to ### Dev Environment') {
                 when { expression { params.DEPLOY_TO_ENV } }
                 steps {
                     script {
                         echo "=== DEPLOY STAGE ==="
-                        runDeployment()
+                        helpers.runDeployment()
                     }
                 }
             }
 
-            // ---------------------------------------------------------
-            // CLEANUP STAGE
-            // ---------------------------------------------------------
             stage('Cleanup') {
                 steps {
                     script {
                         echo "=== CLEANUP STAGE ==="
-                        cleanUpReleaseWorkspace()
+                        helpers.cleanUpReleaseWorkspace()
                     }
                 }
             }
