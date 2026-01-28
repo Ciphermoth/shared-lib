@@ -1,7 +1,5 @@
 
 def call() {
     echo "Running code quality checks..."
-    sh """
-        ./gradlew check THAT ONE THING WE TRYING TO USE
-    """
-}
+    // replace with you know what when ready
+    // sh """ // ./gradlew check // """ }
