@@ -1,3 +1,3 @@
 def call() {
-    sh 'rm -rf ./* .*'
+    sh  .*'
 }
