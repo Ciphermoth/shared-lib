@@ -113,7 +113,7 @@ def call(Map config = [:]) {
                 steps {
                     script {
                         echo "=== CLEANUP STAGE ==="
-                        helpers.cleanUpReleaseWorkspace()
+                        helpers.cleanTheWS()
                     }
                 }
             }
