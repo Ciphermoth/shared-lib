@@ -4,20 +4,14 @@ def call() {
     // can move this to a config file 
     // this is a list of maps
     def repos = [  
-        [name: "repo1",         url: "https://bitbucket.company.com/scm/<project>/<repo>.git"],
-        [name: "build-artifact",    url: "https://bitbucket.company.com/scm/<project>/<repo>.git"],
-        [name: "repo2",         url: "https://bitbucket.company.com/scm/<project>/<repo>.git"],
-        [name: "repo3",         url: "https://bitbucket.company.com/scm/<project>/<repo>.git"],
-        [name: "repo4",         url: "https://bitbucket.company.com/scm/<project>/<repo>.git"],
-        [name: "repo5",         url: "https://bitbucket.company.com/scm/<project>/<repo>.git"],
-        [name: "repo6",         url: "https://bitbucket.company.com/scm/<project>/<repo>.git"],
-        [name: "repo7",         url: "https://bitbucket.company.com/scm/<project>/<repo>.git"],
-        [name: "repo8",         url: "https://bitbucket.company.com/scm/<project>/<repo>.git"]
-        [name: "repo9",         url: "https://bitbucket.company.com/scm/<project>/<repo>.git"],
-        [name: "repo10",        url: "https://bitbucket.company.com/scm/<project>/<repo>.git"],
-        [name: "repo11",        url: "https://bitbucket.company.com/scm/<project>/<repo>.git"]
+        [name: "repo1",         url: "https://versionctl.company.com/scm/<project>/<repo>.git"],
+        [name: "build-artifact",url: "https://versionctl.company.com/scm/<project>/<repo>.git"],
+        [name: "repo2",         url: "https://versionctl.company.com/scm/<project>/<repo>.git"],
+        [name: "repo3",         url: "https://versionctl.company.com/scm/<project>/<repo>.git"],
+        [name: "repo4",         url: "https://versionctl.company.com/scm/<project>/<repo>.git"],
+        [name: "repo5",         url: "https://versionctl.company.com/scm/<project>/<repo>.git"],
+     
     ]
-
     echo "Starting multi-repo checkout from Nexus"
 
    // Loop through each repository entry in the 'repos' list.
@@ -36,29 +30,27 @@ def call() {
     //   etc.
     dir(repo.name) {
 
-        // Jenkins' built-in Git checkout step.
+        // pipeline' built-in Git checkout step.
         // This is more powerful than 'git clone' because it supports:
         // - credentials
         // - branch selection
         // - shallow clones
         // - retries
-        // - Jenkins SCM polling
+        // - pipeline SCM polling
         checkout([
             $class: 'GitSCM',                 // Tells Jenkins to use the Git plugin
-            branches: [[name: "*/master"]],  //  branch to check out (master)
+            branches: [[name: "Whatever final branch is in powerpoint"]],  //  branch to check out 
             
             // Remote repository configuration
             userRemoteConfigs: [[
                 url: repo.url,         // Bitbucket URL 
-                credentialsId: "nexus-git-creds"  
-                // Jenk credID used to authenticate to Bitbucket.
-                // Replace with Bitbucket credID.
+                credentialsId: "nex-git-creds"  
+                // pipeline credID used to authenticate to versionctl of choice.
+                // Replace with versionctl credID.
             ]]
         ])
     }
-}
 
-// After all repos have been processed, print a confirmation message.
-echo "All repositories successfully checked out"
-
-
+    // After all repos have been processed, print a confirmation message.
+    echo "All repositories successfully checked out"
+   }
