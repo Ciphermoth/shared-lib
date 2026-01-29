@@ -3,6 +3,7 @@ def call() {
     // This is all of the repos in the enviroment that are being pulled
     // can move this to a config file 
     // this is a list of maps
+
     def repos = [  
         [name: "repo1",         url: "https://versionctl.company.com/scm/<project>/<repo>.git"],
         [name: "build-artifact",url: "https://versionctl.company.com/scm/<project>/<repo>.git"],
