@@ -12,9 +12,7 @@ def call() {
         sh """
             echo "C++ build skeleton running"
             # C++ build commands 
-            # Example:
-            # cmake -S . -B build
-            # cmake --build build
+          
         """
 
         return
@@ -27,8 +25,7 @@ def call() {
         sh """
              echo "Gradle build skeleton running"
             # Gradle build commands
-            # Example:
-            # ./gradlew clean build
+         
         """
 
         return
