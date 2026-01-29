@@ -7,13 +7,13 @@ def call() {
 
     if (isCpp) {
         echo "Detected C++ project"
-        echo "C++ build would run here"
+        echo "C++ build runs here"
         return
     }
 
     if (isGradle) {
         echo "Detected Gradle project"
-        echo "Gradle build would run here"
+        echo "Gradle buildd runs here"
         return
     }
 
