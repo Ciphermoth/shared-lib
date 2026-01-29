@@ -5,7 +5,7 @@ import release.NightlyHelpers
 /**
 * Nightly Build Pipeline - orchestrates
 * checkout, build, deploy, test, scan, merge, and cleanup
-**/
+*/
 nightlyPipeline()
 
 
