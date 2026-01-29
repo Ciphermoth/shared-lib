@@ -7,15 +7,32 @@ def call() {
 
     if (isCpp) {
         echo "Detected C++ project"
-        echo "C++ build runs here"
+
+        // --- C++ build logic (skeleton) ---
+        sh """
+            echo "C++ build skeleton running"
+            # C++ build commands 
+            # Example:
+            # cmake -S . -B build
+            # cmake --build build
+        """
+
         return
     }
 
     if (isGradle) {
         echo "Detected Gradle project"
-        echo "Gradle buildd runs here"
+
+        // --- Gradle build logic (skeleton) ---
+        sh """
+             echo "Gradle build skeleton running"
+            # Gradle build commands
+            # Example:
+            # ./gradlew clean build
+        """
+
         return
     }
 
-    error "Unknown project type"
+    error "Unknown build type"
 }
